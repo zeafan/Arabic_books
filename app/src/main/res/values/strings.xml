@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Arabic_books</string>
+    <string name="price">Price(dollar US)</string>
+    <string name="id">ID Book(using in delete or update)</string>
+</resources>

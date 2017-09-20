@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arabic_books</string>
+    <string name="information">بيانات الكتاب</string>
+    <string name="Uplaod_data">رفع الكتاب ومتعلقاته</string>
+</resources>
