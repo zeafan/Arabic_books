@@ -2,4 +2,9 @@
     <string name="app_name">Arabic_books</string>
     <string name="price">Price(dollar US)</string>
     <string name="id">ID Book(using in delete or update)</string>
+    <string name="upload_files">upload files</string>
+    <string name="upload_photo">upload photo</string>
+    <string name="upload_Review">upload Review</string>
+    <string name="upload_Book">upload Book</string>
+    <string name="upload_CD">upload CD</string>
 </resources>

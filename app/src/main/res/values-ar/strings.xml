@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Arabic_books</string>
-    <string name="information">بيانات الكتاب</string>
-    <string name="Uplaod_data">رفع الكتاب ومتعلقاته</string>
+    <string name="app_name">تعليم اللغة العربية</string>
+    <string name="price">السعر(الدولار الأمريكى)</string>
+    <string name="id">رقم الكتاب(يستخدم عن الحذف والتعديل)</string>
+    <string name="upload_files">رفع الملفات</string>
+
 </resources>

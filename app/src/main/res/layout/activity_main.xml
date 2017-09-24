@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,31 +40,20 @@
                     android:hint="@string/id"
                     android:inputType="number" />
             </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
                 <EditText
                     android:id="@+id/editTitle_ar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:hint="عنوان الكتاب بالعربى"
-                    android:inputType="numberDecimal" />
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                    android:inputType="text"  />
                 <EditText
                     android:id="@+id/editTitle_en"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:hint="Book Title by english"
-                    android:inputType="numberDecimal" />
-            </TableRow>
+                    android:inputType="text"  />
             <EditText
                 android:id="@+id/editDetails_ar"
                 android:layout_width="match_parent"
@@ -77,21 +67,178 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:hint="Book details by english no more than 100 word"
-                android:inputType="numberDecimal" />
+                android:inputType="text"  />
             <EditText
                 android:id="@+id/edit_autor_ar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:hint="أسم المؤلف"
-                android:inputType="numberDecimal" />
+                android:inputType="text"  />
             <EditText
                 android:id="@+id/edit_autor_en"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:hint="Author"
-                android:inputType="numberDecimal" />
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="#fd0011"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_files" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/draw"
+                android:layout_margin="5sp"
+                >
+
+                <TextView
+                    android:id="@+id/tx_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/prgss_photo"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/bt_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_photo"
+                    android:layout_weight="1"
+                    android:onClick="Upload_photo"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/draw"
+                android:layout_margin="5sp"
+                >
+
+                <TextView
+                    android:id="@+id/tx_Review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/prgss_Review"
+                    android:visibility="invisible"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/bt_Review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_Review"
+                    android:layout_weight="1"
+                    android:onClick="Upload_review"
+
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/draw"
+                android:layout_margin="5sp"
+                >
+
+                <TextView
+                    android:id="@+id/tx_Book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/prgss_Book"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/bt_Book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_Book"
+                    android:layout_weight="1"
+                    android:onClick="Upload_book"
+
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/draw"
+                android:layout_margin="5sp"
+                >
+
+                <TextView
+                    android:id="@+id/tx_CD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/prgss_CD"
+                    style="?android:attr/progressBarStyle"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/bt_CD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/upload_CD"
+                    android:layout_weight="1"
+                    android:onClick="Upload_CD"
+
+                    />
+            </TableRow>
+
+            <ImageView
+                android:onClick="Upload"
+                android:id="@+id/imageButton"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bt_upload"
+               />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>
