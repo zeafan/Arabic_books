@@ -232,7 +232,7 @@
             </TableRow>
 
             <ImageView
-                android:onClick="Upload"
+                android:onClick="Upload_btn"
                 android:id="@+id/imageButton"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
