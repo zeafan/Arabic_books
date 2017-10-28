@@ -4,12 +4,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewCompat.setLayoutDirection(findViewById(R.id.relative), ViewCompat.LAYOUT_DIRECTION_LTR);
         initailize();
-
     }
 
     @Override
@@ -94,73 +91,85 @@ public class MainActivity extends AppCompatActivity {
 
     final static public int CHOOSE_FILE_CD = 1;
     final static public int CHOOSE_FILE_Book=2;
-
     final static public int CHOOSE_FILE_Review=3;
-
     final static public int CHOOSE_FILE_Photo=4;
 
     public void Upload_CD(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        Intent i = Intent.createChooser(intent, "File");
+        Intent i = Intent.createChooser(intent, "Choose CD");
         startActivityForResult(i, CHOOSE_FILE_CD);
     }
 
     public void Upload_review(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/pdf");
+        Intent i = Intent.createChooser(intent, "Choose Review");
+        startActivityForResult(i, CHOOSE_FILE_Review);
     }
 
     public void Upload_book(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/pdf");
+        Intent i = Intent.createChooser(intent, "choose Book");
+        startActivityForResult(i, CHOOSE_FILE_Book);
     }
 
     public void Upload_photo(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/jpg");
+        Intent i = Intent.createChooser(intent, "Choose Photo");
+        startActivityForResult(i, CHOOSE_FILE_Photo);
     }
 
     public void Upload(View view) {
 
     }
-boolean UpLoad(Uri data)
+boolean UpLoad(Uri data, final TextView txt, final ProgressBar prgss)
 {
-    final ProgressDialog progressDailog=new ProgressDialog(this);
-    progressDailog.setTitle("Uploading...");
-    progressDailog.show();
-    SimpleDateFormat simpleFormatter = new SimpleDateFormat("HH-mm-SS");
-    Date date = new Date();
-    simpleFormatter.format(date);
-    riversRef = mStorageRef.child("ِArabic_book/" + simpleFormatter.toString());
-    StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = riversRef.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-        boolean check;
-        @Override
-        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            Uri downloadUri = taskSnapshot.getDownloadUrl();
-            UriCD = String.valueOf(downloadUri);
-            Toast.makeText(MainActivity.this, "successfull", Toast.LENGTH_SHORT).show();
-        }
-    }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-        }
-    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-        @Override
-        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-            double progress=(100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-            progressDailog.setMessage((int)progress+ "%  uploading..");
-        }
+    SimpleDateFormat simpleFormatter = new SimpleDateFormat("HH-mm-ss");
+    prgss.setVisibility(View.VISIBLE);
+    riversRef = mStorageRef.child("ِArabic_book/" + new Date().getTime());
+            StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = riversRef.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                boolean check;
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    UriCD = String.valueOf(downloadUri);
+                    txt.setText("تم بنجاح");
+                    prgss.setVisibility(View.GONE);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    prgss.setVisibility(View.GONE);
+                    txt.setText("فشل حاول مرة أخرة");
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                    txt.setTextColor(Color.RED);
+                    txt.setText((int) progress + "% ");
+                }
 
-    });
+            });
     return false;
 }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data12345) {
-        super.onActivityResult(requestCode, resultCode, data12345);
-        if (resultCode == RESULT_OK&&data12345!=null&&data12345.getData()!=null)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final Intent Data=data;
+        if (resultCode == RESULT_OK&&data!=null&&data.getData()!=null)
             switch (requestCode) {
                 case CHOOSE_FILE_CD:
                 {
                     try {
-                        Uri uri_cd = data12345.getData();
-                        UpLoad(uri_cd);
+                        UpLoad(data.getData(),txt_cd,PrgBr_cd);
                     }catch (Exception e)
                     {
                         Toast.makeText(this, "هناك خط", Toast.LENGTH_SHORT).show();
@@ -169,17 +178,37 @@ boolean UpLoad(Uri data)
                 }
                 case CHOOSE_FILE_Book:
                 {
+                 /*   new Thread()
+                    {
+                        @Override
+                        public void run() {
+                            super.run();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    UpLoad(Data.getData(),txt_book,PrgBr_book);
+                                }
+                            });
+                        }
+                    }.start();
+                    new Runnable() {
+                        @Override
+                        public void run() {
 
+
+                        }
+                    };*/
+                    UpLoad(Data.getData(),txt_book,PrgBr_book);
                     break;
                 }
                 case CHOOSE_FILE_Review:
                 {
-
+                    UpLoad(Data.getData(),txt_review,PrgBr_review);
                     break;
                 }
                 case CHOOSE_FILE_Photo:
                 {
-
+                    UpLoad(Data.getData(),txt_photo,PrgBr_photo);
                     break;
                 }
             }
