@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 Uri intent;
 TextView txtView;
 ProgressBar prgrssBar;
+int choose;
     void initailize() {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         txt_photo = (TextView) findViewById(R.id.tx_photo);
@@ -68,7 +69,7 @@ ProgressBar prgrssBar;
         ed_author_en = (EditText) findViewById(R.id.edit_autor_en);
     }
 
-    public void permissionGetFile(Uri data, final TextView txt, final ProgressBar prgss) {
+    public void permissionGetFile(Uri data, final TextView txt, final ProgressBar prgss,int _choose) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != getPackageManager().PERMISSION_GRANTED) {
                 if (!shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -76,13 +77,13 @@ ProgressBar prgrssBar;
                     intent=data;
                     txtView=txt;
                     prgrssBar=prgss;
-
+                    choose=_choose;
                 }
                 return;
             }
 
         }
-        UpLoad(data, txt, prgss);
+        UpLoad(data, txt, prgss,_choose);
     }
 
     @Override
@@ -91,9 +92,9 @@ ProgressBar prgrssBar;
         switch (requestCode) {
             case requsetCode:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   UpLoad(intent,txtView,prgrssBar);
+                   UpLoad(intent,txtView,prgrssBar,choose);
                 } else {
-
+                    Toast.makeText(this, "there Error", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -173,17 +174,27 @@ ProgressBar prgrssBar;
 
     }
 
-    boolean UpLoad(Uri data, final TextView txt, final ProgressBar prgss) {
-        SimpleDateFormat simpleFormatter = new SimpleDateFormat("HH-mm-ss");
+    boolean UpLoad(Uri data, final TextView txt, final ProgressBar prgss, final int choose) {
         prgss.setVisibility(View.VISIBLE);
         riversRef = mStorageRef.child("ِArabic_book/" + new Date().getTime());
         StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = riversRef.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            boolean check;
-
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUri = taskSnapshot.getDownloadUrl();
-                UriCD = String.valueOf(downloadUri);
+                switch (choose)
+                {
+                    case CHOOSE_FILE_CD:
+                        UriCD = String.valueOf(downloadUri);
+                        break;
+                    case CHOOSE_FILE_Book:
+                        Uri_book=String.valueOf(downloadUri);
+                        break;
+                    case CHOOSE_FILE_Review:
+                        Uri_Review=String.valueOf(downloadUri);
+                        break;
+                    case CHOOSE_FILE_Photo:
+                        Uri_photo=String.valueOf(downloadUri);
+                }
                 txt.setText("تم بنجاح");
                 prgss.setVisibility(View.GONE);
             }
@@ -213,7 +224,7 @@ ProgressBar prgrssBar;
             switch (requestCode) {
                 case CHOOSE_FILE_CD: {
                     try {
-                        permissionGetFile(data.getData(), txt_cd, PrgBr_cd);
+                        permissionGetFile(data.getData(), txt_cd, PrgBr_cd,CHOOSE_FILE_CD);
                     } catch (Exception e) {
                         Toast.makeText(this, "هناك خط", Toast.LENGTH_SHORT).show();
                     }
@@ -221,7 +232,7 @@ ProgressBar prgrssBar;
                 }
                 case CHOOSE_FILE_Book: {
                     try {
-                        permissionGetFile(Data.getData(), txt_book, PrgBr_book);
+                        permissionGetFile(Data.getData(), txt_book, PrgBr_book,CHOOSE_FILE_Book);
                     } catch (Exception e) {
                         Toast.makeText(this, "هناك خط", Toast.LENGTH_SHORT).show();
                     }
@@ -229,7 +240,7 @@ ProgressBar prgrssBar;
                 }
                 case CHOOSE_FILE_Review: {
                     try {
-                        permissionGetFile(Data.getData(), txt_review, PrgBr_review);
+                        permissionGetFile(Data.getData(), txt_review, PrgBr_review,CHOOSE_FILE_Review);
                     } catch (Exception e) {
                         Toast.makeText(this, "هناك خط", Toast.LENGTH_SHORT).show();
                     }
@@ -237,7 +248,7 @@ ProgressBar prgrssBar;
                 }
                 case CHOOSE_FILE_Photo: {
                     try {
-                        permissionGetFile(Data.getData(), txt_photo, PrgBr_photo);
+                        permissionGetFile(Data.getData(), txt_photo, PrgBr_photo,CHOOSE_FILE_Photo);
                     } catch (Exception e) {
                         Toast.makeText(this, "هناك خط", Toast.LENGTH_SHORT).show();
                     }
