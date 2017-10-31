@@ -46,6 +46,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "511663189798-jsbl9p435mrhefkt2vsrsgt1fmgj852t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.mohamedgomaa.arabic_books",
+            "certificate_hash": "817b1b1f91622756d0308756570bb6d24c4461af"
+          }
+        },
+        {
           "client_id": "511663189798-0c4j5cgo6t39qjlaat1kd8bpk0elbg0l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
