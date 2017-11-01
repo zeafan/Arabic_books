@@ -154,7 +154,7 @@ public class UplaodClss extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_Upload);
+        setContentView(R.layout.activity_upload);
         firebaseDatabase = FirebaseDatabase.getInstance();
         ViewCompat.setLayoutDirection(findViewById(R.id.relative), ViewCompat.LAYOUT_DIRECTION_LTR);
         initailize();

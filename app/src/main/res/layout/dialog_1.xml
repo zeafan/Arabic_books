@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="top|center"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/colorAccent"
+        android:text="إضافة كتاب"
+        android:textSize="26sp"
+        />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:text=" تعديل كتاب"
+        android:textSize="26sp"
+        />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="#7d85f5"
+        android:textSize="26sp"
+        android:text=" حذف كتاب"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/LinearLayout_updta"
+        android:background="#72bad2ea"
+        android:layout_margin="10dp"
+        >
+
+        <EditText
+            android:id="@+id/editText_updta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:layout_weight="1"
+            android:background="#6e8db2fa"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="10sp"
+            android:hint="أدخال ID الخاص للمنتج"
+            />
+
+        <Button
+            android:id="@+id/Ok_updta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="ok"
+
+            android:layout_marginTop="15sp"
+            android:layout_marginRight="10sp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/LinearLayout_delete"
+        android:background="#72bad2ea"
+        android:layout_margin="10dp"
+        >
+
+        <EditText
+            android:id="@+id/editText_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:layout_weight="1"
+            android:background="#6e8db2fa"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="10sp"
+            android:hint="أدخال ID الخاص للمنتج"
+            />
+
+        <Button
+            android:id="@+id/Ok_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="ok"
+
+            android:layout_marginTop="15sp"
+            android:layout_marginRight="10sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>
