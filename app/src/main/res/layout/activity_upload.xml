@@ -235,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="Upload_btn"
-                android:src="@drawable/bt_upload" />
+                android:src="@drawable/go_btn_action" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

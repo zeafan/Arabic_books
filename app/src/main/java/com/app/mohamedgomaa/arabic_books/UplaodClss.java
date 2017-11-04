@@ -2,6 +2,7 @@ package com.app.mohamedgomaa.arabic_books;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,20 +48,9 @@ public class UplaodClss extends AppCompatActivity {
     TextView txt_book;
     ProgressBar PrgBr_photo, PrgBr_cd, PrgBr_review, PrgBr_book;
     EditText ed_price, ed_id, ed_title_ar, ed_title_en, ed_details_ar, ed_details_en, ed_author_ar, ed_author_en;
-    String value_id, value_price, value_title_ar, value_title_en, value_details_ar, value_details_en, value_author_ar, value_author_en;
+    String value_id, value_title_ar, value_title_en, value_details_ar, value_details_en, value_author_ar, value_author_en;
+    double  value_price;
     String Uri_CD="", Uri_book="", Uri_Review="", Uri_photo="";
-    final String Key_price="price";
-    final String Key_id="id";
-    final String Key_title_ar="title_ar";
-    final String Key_title_en="title_en";
-    final String Key_details_ar="details_ar";
-    final String Key_details_en="details_en";
-    final String Key_author_ar="author_ar";
-    final String Key_author_en="author_en";
-    final String Key_Uri_CD="UriCD";
-    final String Key_Uri_book="Uri_book";
-    final String Key_Uri_Review="Uri_Review";
-    final String Key_Uri_photo="Uri_photo";
     final static public int CHOOSE_FILE_CD = 1;
     final static public int CHOOSE_FILE_Book = 2;
     final static public int CHOOSE_FILE_Review = 3;
@@ -70,20 +60,30 @@ public class UplaodClss extends AppCompatActivity {
     TextView txtView;
     ProgressBar prgrssBar;
     int choose;
+    item LoadItem;
     boolean checkValues() {
-        if (!ed_price.getText().toString().equals("") && !ed_id.getText().toString().equals("") && !ed_title_ar.getText().toString().equals("") &&
+        if (!ed_price.getText().toString().equals("") && !ed_title_ar.getText().toString().equals("") &&
                 !ed_title_en.getText().toString().equals("") && !ed_details_ar.getText().toString().equals("") &&
                 !ed_details_en.getText().toString().equals("") && !ed_author_ar.getText().toString().equals("") &&
                 !ed_author_en.getText().toString().equals("") && !Uri_CD.equals("") && !Uri_book.equals("") &&
                 !Uri_Review.equals("") && !Uri_photo.equals("")) {
-            value_id = ed_id.getText().toString();
-            value_price = ed_price.getText().toString();
+            value_price = Double.parseDouble(ed_price.getText().toString());
             value_title_ar = ed_title_ar.getText().toString();
             value_title_en = ed_title_en.getText().toString();
             value_details_ar = ed_details_ar.getText().toString();
             value_details_en = ed_details_en.getText().toString();
             value_author_ar = ed_author_ar.getText().toString();
             value_author_en = ed_author_en.getText().toString();
+            if(LoadItem==null)
+            {
+                if(!ed_id.getText().toString().equals(""))
+                {
+                    value_id = ed_id.getText().toString();
+                }else {
+                    Toast.makeText(this, "أكمل أدخال البيانات بالكامل",Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
             return true;
         }else {
             Toast.makeText(this, "أكمل أدخال البيانات بالكامل",Toast.LENGTH_LONG).show();
@@ -161,8 +161,31 @@ public class UplaodClss extends AppCompatActivity {
         if(!new CheckConnection_Internet(this).IsConnection()) {
             Toast.makeText(this, "لا يوجد أتصال بالأنترنت", Toast.LENGTH_SHORT).show();
         }
+        LoadItem= (item)getIntent().getSerializableExtra("Item");
+        if(LoadItem!=null)
+        {
+            SetValues();
+            value_id=getIntent().getExtras().getString("id");
+            ed_id.setVisibility(View.GONE);
+        }
     }
-
+void SetValues(){
+    ed_price.setText(String.valueOf(LoadItem.price));
+    ed_title_ar.setText(LoadItem.title_ar);
+    ed_title_en.setText(LoadItem.title_en);
+    ed_details_ar.setText(LoadItem.details_ar);
+    ed_details_en.setText(LoadItem.title_en);
+    ed_author_ar.setText(LoadItem.author_ar);
+    ed_author_en.setText(LoadItem.author_en);
+    Uri_CD=LoadItem.pth_cd;
+    Uri_book=LoadItem.pth_book;
+    Uri_photo=LoadItem.pth_photo;
+    Uri_Review=LoadItem.pth_review;
+    txt_book.setText("تم بنجاح مسبقا");
+    txt_cd.setText("تم بنجاح مسبقا");
+    txt_photo.setText("تم بنجاح مسبقا");
+    txt_review.setText("تم بنجاح مسبقا");
+}
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alerm = new AlertDialog.Builder(this);
@@ -222,68 +245,52 @@ public class UplaodClss extends AppCompatActivity {
         if(!new CheckConnection_Internet(this).IsConnection()){
             Toast.makeText(this, "مفيش أتصال بالأنترنت", Toast.LENGTH_SHORT).show();
         }else if(checkValues()&&Check_Product_ID(value_id)) {
-
-            DatabaseReference IDProduct = firebaseDatabase.getReference().child(value_id);
-            IDProduct.updateChildren(Setmap());
-            IDProduct.addChildEventListener(new ChildEventListener() {
+            firebaseDatabase.getReference().child(value_id).setValue( SetObj()).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    String value= (String) dataSnapshot.getValue();
-                    Toast.makeText(UplaodClss.this, " بنجاح "+value+" تم إضافة ", Toast.LENGTH_SHORT).show();
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(UplaodClss.this, "تم بنجاح", Toast.LENGTH_SHORT).show();
                 }
-
+            }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(UplaodClss.this, "فشلت العملية", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
     private boolean Check_Product_ID(String id_pro)
     {
-        SharedPreferences sharedPreferences=getSharedPreferences("ProductID_file",MODE_PRIVATE);
-        String id_prod=sharedPreferences.getString(id_pro,"");
-        if(id_prod.equals(""))
-        {
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString(id_pro,id_pro);
-            editor.apply();
-            return true;
+        if(LoadItem==null) {
+            SharedPreferences sharedPreferences = getSharedPreferences("ProductID_file", MODE_PRIVATE);
+            String id_prod = sharedPreferences.getString(id_pro, "");
+            if (id_prod.equals("")) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(id_pro, id_pro);
+                editor.apply();
+                return true;
+            } else {
+                Toast.makeText(this, "تم إدخال ID الخاص للمنتج مسبقاً لا يمكن أضافة منتج له نفس الID", Toast.LENGTH_LONG).show();
+                return false;
+            }
         }else {
-            Toast.makeText(this, "تم إدخال ID الخاص للمنتج مسبقاً لا يمكن أضافة منتج له نفس الID", Toast.LENGTH_LONG).show();
-            return false;
+            return true;
         }
     }
-    private Map<String,Object>Setmap()
+    private item SetObj()
     {
-        Map<String,Object> map=new HashMap<>();
-        map.put(Key_price,value_price);
-        map.put(Key_title_ar,value_title_ar);
-        map.put(Key_title_en,value_title_en);
-        map.put(Key_author_en,value_author_en);
-        map.put(Key_author_ar,value_author_ar);
-        map.put(Key_details_ar,value_details_ar);
-        map.put(Key_details_en,value_details_en);
-        map.put(Key_Uri_photo,Uri_photo);
-        map.put(Key_Uri_book,Uri_book);
-        map.put(Key_Uri_Review,Uri_Review);
-        map.put(Key_Uri_CD,Uri_CD);
-        return map;
+        item it=new item();
+        it.price=value_price;
+        it.title_ar=value_title_ar;
+       it.title_en=value_title_en;
+        it.author_en=value_author_en;
+        it.author_ar=value_author_ar;
+        it.details_ar=value_details_ar;
+        it.details_en= value_details_en;
+        it.pth_photo=Uri_photo;
+        it.pth_book= Uri_book;
+        it.pth_review=Uri_Review;
+        it.pth_cd=Uri_CD;
+        return it;
     }
     boolean UpLoad(Uri data, final TextView txt, final ProgressBar prgss, final int choose) {
         prgss.setVisibility(View.VISIBLE);
